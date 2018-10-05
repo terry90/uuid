@@ -62,6 +62,39 @@ impl str::FromStr for Uuid {
     }
 }
 
+impl str::FromStr for Version {
+    // TODO: provide an error type
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        if s.eq_ignore_ascii_case("nil") {
+            return Ok(Version::Nil)
+        }
+
+        if s.eq_ignore_ascii_case("mac") || s.eq_ignore_ascii_case("v1") {
+            return Ok(Version::Mac)
+        }
+
+        if s.eq_ignore_ascii_case("dce") || s.eq_ignore_ascii_case("v2") {
+            return Ok(Version::Dce)
+        }
+
+        if s.eq_ignore_ascii_case("md5") || s.eq_ignore_ascii_case("v3") {
+            return Ok(Version::Md5)
+        }
+
+        if s.eq_ignore_ascii_case("random") || s.eq_ignore_ascii_case("v4") {
+            return Ok(Version::Random)
+        }
+
+        if s.eq_ignore_ascii_case("sha1") || s.eq_ignore_ascii_case("v5") {
+            return Ok(Version::Sha1)
+        }
+
+        return Err(())
+    }
+}
+
 impl Default for Uuid {
     #[inline]
     fn default() -> Self {
